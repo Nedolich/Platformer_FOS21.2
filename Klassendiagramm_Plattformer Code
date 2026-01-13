@@ -1,0 +1,115 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class PlatformerGame {
+
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.start();
+    }
+}
+
+/* ===================== GAME ===================== */
+class Game {
+
+    private Level currentLevel;
+    private List<Level> levels;
+
+    public Game() {
+        levels = new ArrayList<>();
+        levels.add(new Level("Level 1"));
+        levels.add(new Level("Level 2"));
+        currentLevel = levels.get(0);
+    }
+
+    public void start() {
+        System.out.println("Platformer gestartet!");
+        currentLevel.start();
+    }
+}
+
+/* ===================== LEVEL ===================== */
+class Level {
+
+    private String name;
+    private Player player;
+    private List<Enemy> enemies;
+    private List<Platform> platforms;
+
+    public Level(String name) {
+        this.name = name;
+        player = new Player(0, 0);
+        enemies = new ArrayList<>();
+        platforms = new ArrayList<>();
+        setup();
+    }
+
+    private void setup() {
+        enemies.add(new Enemy(5, 0));
+        platforms.add(new Platform(0, -1, 10));
+    }
+
+    public void start() {
+        System.out.println("Starte " + name);
+        update();
+    }
+
+    private void update() {
+        player.moveRight();
+        player.jump();
+
+        for (Enemy enemy : enemies) {
+            enemy.move();
+        }
+    }
+}
+
+/* ===================== PLAYER ===================== */
+class Player {
+
+    private int x, y;
+    private int lives = 3;
+
+    public Player(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void moveRight() {
+        x++;
+        System.out.println("Spieler bewegt sich nach rechts: x=" + x);
+    }
+
+    public void jump() {
+        y++;
+        System.out.println("Spieler springt: y=" + y);
+    }
+}
+
+/* ===================== ENEMY ===================== */
+class Enemy {
+
+    private int x, y;
+
+    public Enemy(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void move() {
+        x--;
+        System.out.println("Gegner bewegt sich: x=" + x);
+    }
+}
+
+/* ===================== PLATFORM ===================== */
+class Platform {
+
+    private int x, y, width;
+
+    public Platform(int x, int y, int width) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+    }
+}
